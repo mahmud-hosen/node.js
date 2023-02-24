@@ -1,0 +1,11 @@
+***  Raw Project Plan   ***
+_________________________
+
+1) Start API Server
+2) Create, Edit, Delete User
+3) Token base authentication
+4) Set link & Up/Down
+5) Edit/Delete link & rate limit
+6) Check up/down time
+
+DataBase: File System
