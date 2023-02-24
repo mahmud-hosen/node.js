@@ -1,0 +1,14 @@
+1) people.js
+
+    const people = ['Jamal', 'Kamal', 'Habib'];
+    const age = ['Jamal', 20, 30];
+
+    module.exports = {
+        people,age
+    };
+
+2) index.js
+
+    const x = require('lodash');
+    const y = require('./people.js');
+    console.log(y);
