@@ -3,6 +3,8 @@ Title: Uptime Monitoring Application
 Learn: createServer, path read,  method read, queryStringObject read, headers data read, body data read 
 Description: A RestFul API to monitor up or down time of user define links
 Date:25-02-2023
+
+Package: $ npm install -g nodemon  // for auto run without refresh
 */
 
 // Dependencies
@@ -29,6 +31,7 @@ app.createServer = () =>{
 
 //Handel Request Response
 app.handelReqRes = handelReqRes;
+
 
 // Start Server 
 app.createServer();
