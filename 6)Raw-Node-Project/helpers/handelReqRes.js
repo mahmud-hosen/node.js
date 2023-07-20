@@ -1,14 +1,18 @@
 /*
 Title: Handle Request Response
 Description: Handle Request Response
+
+#  Place Route Handler in proper place
+
+
 Date: 08-04-2023
 */
 
 // Dependencies
 const url = require('url');
-const {StringDecoder} = require('string_decoder'); //  StringDecoder class from string_decoder module
+const { StringDecoder } = require('string_decoder'); //  StringDecoder class from string_decoder module
 const routes = require('../routes')
-const {notFoundHandler} = require('../handlers/routeHandlers/notFoundHandler')
+const { notFoundHandler } = require('../handlers/routeHandlers/notFoundHandler')
 
 
 // module scaffolding
@@ -28,7 +32,7 @@ handler.handelReqRes = (req, res) => {
     const queryStringObject = parseUrl.query;            // http://localhost:3000/about/home/?a=10&b=5 --> query string a=10, b=5
     const headersObject = req.headers;                   // Header data receive
 
-    
+
     // Create a Request Property
 
     const requestProperties = {
@@ -39,7 +43,7 @@ handler.handelReqRes = (req, res) => {
         queryStringObject,
         headersObject
     }
-    
+
     const decoder = new StringDecoder('utf-8');   //Create a obj of StringDecoder // StringDecoder-> encoding formate(utf-8)
     let realData = '';
 
@@ -47,17 +51,6 @@ handler.handelReqRes = (req, res) => {
     const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
     // console.log(chosenHandler)
 
-    chosenHandler(requestProperties, (statusCode, payload) =>{
-        statusCode = typeof statusCode === 'number' ? statusCode : 500;
-        payload = typeof payload === 'object' ? payload : {};
-
-        const payloadString = JSON.stringify(payload);
-
-        // Return the final response
-        res.writeHead(statusCode);
-        res.end(payloadString);
-
-    });
 
     //Get Buffer: request.on data event listen & get buffer(convert to data)
     req.on('data', (buffer) => {
@@ -67,7 +60,18 @@ handler.handelReqRes = (req, res) => {
     // End event fire When all data get using buffer way
     req.on('end', () => {
         realData += decoder.end();
-        console.log(realData);
+
+        // Place Route Handler in proper place
+        chosenHandler(requestProperties, (statusCode, payload) => {
+            statusCode = typeof statusCode === 'number' ? statusCode : 500;
+            payload = typeof payload === 'object' ? payload : {}; // payload is all body data
+
+            const payloadString = JSON.stringify(payload);
+
+            // Return the final response
+            res.writeHead(statusCode);
+            res.end(payloadString);
+        });
 
         // Response Handling
         res.end('Hello Programmers');
