@@ -10,17 +10,10 @@ Date:25-02-2023
 Package: $ npm install -g nodemon  // for auto run without refresh
 */
 
-// Dependencies
-const http = require('http');
-const {handelReqRes} = require('./helpers/handelReqRes');
-const environment = require('./helpers/environments')
-const data = require('./lib/data');
 
 
-// console.log(environment)
 
-//App object module scaffolding
-const app = {};
+
 
 // test data create
 // data.create('test', 'newFile', {name: 'Mahmud', language: 'Bangla'}, (err) => {
@@ -41,19 +34,21 @@ const app = {};
 // })
 
 
+// dependencies
+const server = require('./lib/server');
+const workers = require('./lib/worker');
 
-//Create server
-app.createServer = () =>{
-    const server = http.createServer(app.handelReqRes);
-    server.listen(environment.port, () => {
+// app object - module scaffolding
+const app = {};
 
-        console.log(`Listening to port ${environment.port}`);
-    })
-}
+app.init = () => {
+    // start the server
+    server.init();
+    // start the workers
+    workers.init();
+};
 
-//Handel Request Response
-app.handelReqRes = handelReqRes;
+app.init();
 
-
-// Start Server 
-app.createServer();
+// export the app
+module.exports = app;
